@@ -32,6 +32,7 @@ namespace leads_hr_ltd.Controllers
         {
             try
             {
+                string connectionString = _configuration.GetConnectionString("DefaultConnection");
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
