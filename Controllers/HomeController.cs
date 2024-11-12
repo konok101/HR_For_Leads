@@ -42,8 +42,7 @@ namespace leads_hr_ltd.Controllers
                     };
 
                     // Add parameters to the stored procedure
-                    command.Parameters.AddWithValue("@EmployeeID", employee.EmployeeID);
-                    command.Parameters.AddWithValue("@FirstName", employee.FirstName);
+                     command.Parameters.AddWithValue("@FirstName", employee.FirstName);
                     command.Parameters.AddWithValue("@LastName", employee.LastName);
                     command.Parameters.AddWithValue("@Division", employee.Division);
                     command.Parameters.AddWithValue("@Building", employee.Building);

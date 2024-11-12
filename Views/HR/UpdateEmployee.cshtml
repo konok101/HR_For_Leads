@@ -1,0 +1,49 @@
+﻿@model leads_hr_ltd.Models.Employee
+
+@{
+    ViewData["Title"] = "Update Employee";
+}
+
+<h2>Update Employee</h2>
+
+<form asp-action="UpdateEmployee" method="post">
+    <input asp-for="EmployeeID" type="hidden" />
+    <div class="form-group">
+        <label asp-for="FirstName"></label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="LastName"></label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Division"></label>
+        <input asp-for="Division" class="form-control" />
+        <span asp-validation-for="Division" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Building"></label>
+        <input asp-for="Building" class="form-control" />
+        <span asp-validation-for="Building" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Room"></label>
+        <input asp-for="Room" class="form-control" />
+        <span asp-validation-for="Room" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="HRDataList" class="btn btn-secondary">Cancel</a>
+</form>
