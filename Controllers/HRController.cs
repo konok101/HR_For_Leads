@@ -14,17 +14,16 @@ namespace leads_hr_ltd.Controllers
         private readonly IConfiguration _configuration;
         private readonly ILogger<HRController> _logger;
 
+         private readonly string _connectionString;
+
         // Inject IConfiguration and ILogger into the constructor
         public HRController(IConfiguration configuration, ILogger<HRController> logger)
         {
             _configuration = configuration;
             _logger = logger;
-        }
 
-        // Display the employee insertion form
-        public IActionResult InsertEmployeeInfo()
-        {
-            return View();
+            // Initialize the connection string inside the constructor
+            _connectionString = _configuration.GetConnectionString("DefaultConnection");
         }
 
         // Method to get employee data for the view
@@ -53,9 +52,8 @@ namespace leads_hr_ltd.Controllers
 
             try
             {
-                string connectionString = _configuration.GetConnectionString("DefaultConnection");
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                // Use the class-level field _connectionString
+                using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     SqlCommand command = new SqlCommand("GetEmployeeDetails", connection)
                     {
