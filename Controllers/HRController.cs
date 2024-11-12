@@ -55,7 +55,7 @@ namespace leads_hr_ltd.Controllers
                 // Use the class-level field _connectionString
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
-                    SqlCommand command = new SqlCommand("GetEmployeeDetails", connection)
+                    SqlCommand command = new SqlCommand("GetEmployeeDetailst", connection)
                     {
                         CommandType = CommandType.StoredProcedure
                     };

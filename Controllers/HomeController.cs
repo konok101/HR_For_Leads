@@ -77,7 +77,7 @@ namespace leads_hr_ltd.Controllers
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    SqlCommand command = new SqlCommand("GetEmployeeDetails", connection)
+                    SqlCommand command = new SqlCommand("GetEmployeeDetailst", connection)
                     {
                         CommandType = CommandType.StoredProcedure
                     };
