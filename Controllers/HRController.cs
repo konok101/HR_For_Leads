@@ -34,7 +34,7 @@ namespace leads_hr_ltd.Controllers
         }
 
         // API to get employee data as JSON
-        [HttpGet("api/hr/employees")]
+/*        [HttpGet("api/hr/employees")]
         public IActionResult GetEmployeeData()
         {
             List<Employee> employees = FetchEmployeeData();
@@ -43,7 +43,7 @@ namespace leads_hr_ltd.Controllers
                 return StatusCode(500, "Internal server error");
             }
             return Ok(employees);
-        }
+        }*/
 
         // Helper method to fetch data from the database
         private List<Employee> FetchEmployeeData()
