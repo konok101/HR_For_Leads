@@ -25,6 +25,7 @@ namespace leads_hr_ltd.Controllers
         // Display the HR Data List with optional EmployeeID filter
         public IActionResult HRDataList(int? EmployeeID)
         {
+            // Fetch employees based on EmployeeID if it is passed, otherwise fetch all employees
             var employees = EmployeeID.HasValue ? FetchEmployeeDataByID(EmployeeID.Value) : FetchEmployeeData();
             return View(employees ?? new List<Employee>());
         }
@@ -49,37 +50,6 @@ namespace leads_hr_ltd.Controllers
         }
 
         // Method to handle update form submission
-        /*        [HttpPost]
-                public IActionResult UpdateEmployee(Employee updatedEmployee)
-                {
-                    // Ensure that the EmployeeID is valid before attempting to update
-                    if (updatedEmployee.EmployeeID == 0)
-                    {
-                        ModelState.AddModelError("EmployeeID", "Employee ID is required");
-                        return View(updatedEmployee);
-                    }
-
-                    // Check for required fields
-                    if (string.IsNullOrEmpty(updatedEmployee.FirstName) || string.IsNullOrEmpty(updatedEmployee.LastName))
-                    {
-                        ModelState.AddModelError("FirstName", "First Name is required");
-                        ModelState.AddModelError("LastName", "Last Name is required");
-                        return View(updatedEmployee);
-                    }
-
-                    // Call the method to update the employee data in the database
-                    bool isUpdated = UpdateEmployeeInDB(updatedEmployee);
-                    if (isUpdated)
-                    {
-                        return RedirectToAction("HRDataList"); // Redirect to HRDataList after successful update
-                    }
-
-                    // If the update failed, add a model error and return to the view
-                    ModelState.AddModelError("", "An error occurred while updating the employee.");
-                    return View(updatedEmployee);
-                }
-        */
-
         [HttpPost]
         public IActionResult UpdateEmployee(Employee updatedEmployee)
         {
@@ -107,8 +77,8 @@ namespace leads_hr_ltd.Controllers
                     // Log success (optional)
                     _logger.LogInformation($"Employee updated successfully: {updatedEmployee.EmployeeID}");
 
-                    // Redirect to HRDataList after successful update
-                    return RedirectToAction("HRDataList"); // Ensure HRDataList is the correct action
+                    // Redirect to HRDataList after successful update and pass the EmployeeID if needed
+                    return RedirectToAction("HRDataList", new { EmployeeID = updatedEmployee.EmployeeID });
                 }
                 else
                 {
@@ -130,8 +100,6 @@ namespace leads_hr_ltd.Controllers
                 return View(updatedEmployee);
             }
         }
-
-
 
         // Fetch all employees
         private List<Employee> FetchEmployeeData()
@@ -215,10 +183,6 @@ namespace leads_hr_ltd.Controllers
             }
         }
 
-
-
-
-
         // Update employee in DB
         private bool UpdateEmployeeInDB(Employee updatedEmployee)
         {
@@ -243,7 +207,6 @@ namespace leads_hr_ltd.Controllers
                     var result = command.ExecuteScalar();  // Use ExecuteScalar to get the return value
 
                     return result != null && Convert.ToInt32(result) == 1;  // If return value is 1, update was successful
-
                 }
             }
             catch (Exception ex)
@@ -252,7 +215,5 @@ namespace leads_hr_ltd.Controllers
                 return false;
             }
         }
-
-
     }
 }
