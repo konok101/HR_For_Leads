@@ -1,10 +1,19 @@
-﻿@{
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+@model leads_hr_ltd.Models.Employee
+
+@{
     ViewData["Title"] = "Insert Employee";
 }
 
-<h2>Insert Employee</h2>
+<h2>Insert Employee for HR</h2>
 
-<form method="post" asp-action="InsertEmployee">
+<form method="post" action="/api/HR/InsertEmplyeInfo"  >
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
