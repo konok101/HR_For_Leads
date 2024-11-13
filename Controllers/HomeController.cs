@@ -12,13 +12,16 @@ namespace leads_hr_ltd.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _configuration;
+        private readonly string _connectionString;
 
         public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
         {
             _logger = logger;
             _configuration = configuration;
+            _connectionString = _configuration.GetConnectionString("DefaultConnection");
+
         }
- 
+
         // GET method for displaying the form
         [HttpGet]
         public IActionResult InsertEmployee()
@@ -32,9 +35,8 @@ namespace leads_hr_ltd.Controllers
         {
             try
             {
-                string connectionString = _configuration.GetConnectionString("DefaultConnection");
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
+ 
+                using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     SqlCommand command = new SqlCommand("InsertEmployee", connection)
                     {
@@ -72,9 +74,8 @@ namespace leads_hr_ltd.Controllers
 
             try
             {
-                string connectionString = _configuration.GetConnectionString("DefaultConnection");
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
+ 
+                using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     SqlCommand command = new SqlCommand("GetEmployeeDetailst", connection)
                     {
