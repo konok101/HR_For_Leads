@@ -1,9 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@model List<leads_hr_ltd.Models.Employee>
+﻿@model List<leads_hr_ltd.Models.Employee>
 
 @{
     ViewData["Title"] = "Employee List";
@@ -11,12 +6,18 @@
 
 <h2>Employee List</h2>
 
-<table class="table">
+<!-- Single Search Field -->
+<div class="form-group">
+    <label for="searchTerm">Search by Name or Room:</label>
+    <input type="text" id="searchTerm" class="form-control" placeholder="Enter name or room" onkeyup="filterTable()" />
+</div>
+
+<!-- Employee Table -->
+<table class="table mt-4" id="employeeTable">
     <thead>
         <tr>
-             <th>ID </th>
+            <th>ID</th>
             <th>First Name</th>
-
             <th>Last Name</th>
             <th>Division</th>
             <th>Building</th>
@@ -28,9 +29,8 @@
         @foreach (var employee in Model)
         {
             <tr>
-                 <td>@employee.EmployeeID</td>
+                <td>@employee.EmployeeID</td>
                 <td>@employee.FirstName</td>
-
                 <td>@employee.LastName</td>
                 <td>@employee.Division</td>
                 <td>@employee.Building</td>
@@ -40,3 +40,30 @@
         }
     </tbody>
 </table>
+
+<script>
+    function filterTable() {
+        // Get the search input value
+        const searchTerm = document.getElementById("searchTerm").value.toLowerCase();
+
+        // Get the table and all rows
+        const table = document.getElementById("employeeTable");
+        const rows = table.getElementsByTagName("tr");
+
+        // Loop through rows and hide those that don't match search criteria
+        for (let i = 1; i < rows.length; i++) { // Start at 1 to skip header row
+            const firstName = rows[i].getElementsByTagName("td")[1]?.textContent.toLowerCase() || "";
+            const lastName = rows[i].getElementsByTagName("td")[2]?.textContent.toLowerCase() || "";
+            const room = rows[i].getElementsByTagName("td")[6]?.textContent.toLowerCase() || "";
+
+            // Combine first name and last name for name filter
+            const fullName = firstName + " " + lastName;
+
+            // Check if search term is found in either the full name or the room
+            const match = fullName.includes(searchTerm) || room.includes(searchTerm);
+
+            // Show or hide the row based on match
+            rows[i].style.display = match ? "" : "none";
+        }
+    }
+</script>
