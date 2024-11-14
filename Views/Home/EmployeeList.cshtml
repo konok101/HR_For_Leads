@@ -23,6 +23,7 @@
             <th>Building</th>
             <th>Title</th>
             <th>Room</th>
+            <th>Actions</th> <!-- New Actions Column -->
         </tr>
     </thead>
     <tbody>
@@ -36,6 +37,11 @@
                 <td>@employee.Building</td>
                 <td>@employee.Title</td>
                 <td>@employee.Room</td>
+                <td>
+                    <!-- Edit and Delete Buttons -->
+                    <a href="@Url.Action("Edit", "Employee", new { id = employee.EmployeeID })" class="btn btn-primary btn-sm">Edit</a>
+                    <button onclick="deleteEmployee(@employee.EmployeeID)" class="btn btn-danger btn-sm">Delete</button>
+                </td>
             </tr>
         }
     </tbody>
@@ -43,27 +49,24 @@
 
 <script>
     function filterTable() {
-        // Get the search input value
         const searchTerm = document.getElementById("searchTerm").value.toLowerCase();
-
-        // Get the table and all rows
         const table = document.getElementById("employeeTable");
         const rows = table.getElementsByTagName("tr");
 
-        // Loop through rows and hide those that don't match search criteria
-        for (let i = 1; i < rows.length; i++) { // Start at 1 to skip header row
+        for (let i = 1; i < rows.length; i++) {
             const firstName = rows[i].getElementsByTagName("td")[1]?.textContent.toLowerCase() || "";
             const lastName = rows[i].getElementsByTagName("td")[2]?.textContent.toLowerCase() || "";
             const room = rows[i].getElementsByTagName("td")[6]?.textContent.toLowerCase() || "";
-
-            // Combine first name and last name for name filter
             const fullName = firstName + " " + lastName;
-
-            // Check if search term is found in either the full name or the room
             const match = fullName.includes(searchTerm) || room.includes(searchTerm);
-
-            // Show or hide the row based on match
             rows[i].style.display = match ? "" : "none";
+        }
+    }
+
+    function deleteEmployee(employeeId) {
+        if (confirm("Are you sure you want to delete this employee?")) {
+            // Redirect to the delete action with the employee ID
+            window.location.href = '@Url.Action("Deletes", "Home")' + "?id=" + employeeId;
         }
     }
 </script>

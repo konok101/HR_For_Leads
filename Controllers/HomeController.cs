@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +20,6 @@ namespace leads_hr_ltd.Controllers
             _logger = logger;
             _configuration = configuration;
             _connectionString = _configuration.GetConnectionString("DefaultConnection");
-
         }
 
         // GET method for displaying the form
@@ -35,7 +35,6 @@ namespace leads_hr_ltd.Controllers
         {
             try
             {
- 
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     SqlCommand command = new SqlCommand("InsertEmployee", connection)
@@ -44,7 +43,7 @@ namespace leads_hr_ltd.Controllers
                     };
 
                     // Add parameters to the stored procedure
-                     command.Parameters.AddWithValue("@FirstName", employee.FirstName);
+                    command.Parameters.AddWithValue("@FirstName", employee.FirstName);
                     command.Parameters.AddWithValue("@LastName", employee.LastName);
                     command.Parameters.AddWithValue("@Division", employee.Division);
                     command.Parameters.AddWithValue("@Building", employee.Building);
@@ -55,26 +54,24 @@ namespace leads_hr_ltd.Controllers
                     command.ExecuteNonQuery();
                 }
 
-                // Optionally, you can add a success message or redirect
                 TempData["Message"] = "Employee inserted successfully!";
-                return RedirectToAction("EmployeeList"); // or wherever you want to redirect
+                return RedirectToAction("EmployeeList");
             }
             catch (Exception ex)
             {
                 _logger.LogError($"An error occurred while inserting employee: {ex.Message}");
                 TempData["ErrorMessage"] = "There was an error inserting the employee.";
-                return RedirectToAction("EmployeeList"); // or handle error accordingly
+                return RedirectToAction("EmployeeList");
             }
         }
 
-        // Display employee list (optional)
+        // Display employee list
         public IActionResult EmployeeList()
         {
             List<Employee> employees = new List<Employee>();
 
             try
             {
- 
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     SqlCommand command = new SqlCommand("GetEmployeeDetailst", connection)
@@ -107,5 +104,36 @@ namespace leads_hr_ltd.Controllers
 
             return View(employees);
         }
+
+ 
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    SqlCommand command = new SqlCommand("DeleteEmployee", connection)
+                    {
+                        CommandType = CommandType.StoredProcedure
+                    };
+                    command.Parameters.AddWithValue("@EmployeeID", id);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+
+                TempData["Message"] = "Employee deleted successfully!";
+                return RedirectToAction("EmployeeList");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An error occurred while deleting the employee: {ex.Message}");
+                TempData["ErrorMessage"] = "There was an error deleting the employee.";
+            }
+
+            return RedirectToAction("EmployeeList");
+        }
+
     }
 }
