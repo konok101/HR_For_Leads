@@ -4,7 +4,10 @@
     ViewData["Title"] = "Employee List";
 }
 
-<h2>Employee List</h2>
+<div class="card">
+    <div class="card-header">
+        <h2>Employee List</h2>
+    </div>
 
 <!-- Single Search Field -->
 <div class="form-group">
@@ -13,6 +16,8 @@
 </div>
 
 <!-- Employee Table -->
+    <div class="card-body">
+
 <table class="table mt-4" id="employeeTable">
     <thead>
         <tr>
@@ -46,6 +51,8 @@
         }
     </tbody>
 </table>
+    </div>
+</div>
 
 <script>
     function filterTable() {
