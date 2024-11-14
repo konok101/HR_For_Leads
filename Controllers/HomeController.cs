@@ -135,5 +135,96 @@ namespace leads_hr_ltd.Controllers
             return RedirectToAction("EmployeeList");
         }
 
+
+
+        [HttpGet]
+        [Route("Home/EditEmployee/{id}")]
+
+        public IActionResult EditEmployee(int id)
+        {
+            Employee employee = new Employee();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    SqlCommand command = new SqlCommand("GetEmployeeById", connection)
+                    {
+                        CommandType = CommandType.StoredProcedure
+                    };
+                    command.Parameters.AddWithValue("@EmployeeID", id);
+
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        employee = new Employee
+                        {
+                            EmployeeID = reader.GetInt32(0),
+                            FirstName = reader.GetString(1),
+                            LastName = reader.GetString(2),
+                            Division = reader.GetString(3),
+                            Building = reader.GetString(4),
+                            Title = reader.GetString(5),
+                            Room = reader.GetString(6)
+                        };
+                    }
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An error occurred while fetching employee details: {ex.Message}");
+            }
+
+            return View(employee); // Return the employee details to the edit view
+        }
+        // POST method for editing an employee's information
+        [HttpPost]
+         public IActionResult UpdateEmployee(Employee employee)
+        {
+            if (!ModelState.IsValid) // Check if the model is valid before proceeding
+            {
+                return View(employee); // Return the same view with validation errors
+            }
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    SqlCommand command = new SqlCommand("UpdateEmployee", connection) // Use a stored procedure for updating employee
+                    {
+                        CommandType = CommandType.StoredProcedure
+                    };
+
+                    // Add parameters to the stored procedure
+                    command.Parameters.AddWithValue("@EmployeeID", employee.EmployeeID); // Include the EmployeeID to update the correct record
+                    command.Parameters.AddWithValue("@FirstName", employee.FirstName);
+                    command.Parameters.AddWithValue("@LastName", employee.LastName);
+                    command.Parameters.AddWithValue("@Division", employee.Division);
+                    command.Parameters.AddWithValue("@Building", employee.Building);
+                    command.Parameters.AddWithValue("@Title", employee.Title);
+                    command.Parameters.AddWithValue("@Room", employee.Room);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+
+                TempData["Message"] = "Employee updated successfully!";
+                return RedirectToAction("EmployeeList");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An error occurred while updating employee: {ex.Message}");
+                TempData["ErrorMessage"] = "There was an error updating the employee.";
+                return RedirectToAction("EmployeeList");
+            }
+        }
+
+
+           
+  
+
     }
 }
