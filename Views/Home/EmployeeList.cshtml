@@ -8,15 +8,15 @@
 
 <!-- Single Search Field -->
 <div class="form-group">
-    <label for="searchTerm">Search by Name or Room:</label>
-    <input type="text" id="searchTerm" class="form-control" placeholder="Enter name or room cc" onkeyup="filterTable()" />
+    <label for="searchTerm">Search by ID:</label>
+    <input type="text" id="searchTerm" class="form-control" placeholder="Enter Employe ID" onkeyup="filterTable()" />
 </div>
 
 <!-- Employee Table -->
 <table class="table mt-4" id="employeeTable">
     <thead>
         <tr>
-            <th>ID</th>
+            <th>Employe ID</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Division</th>
@@ -54,11 +54,9 @@
         const rows = table.getElementsByTagName("tr");
 
         for (let i = 1; i < rows.length; i++) {
-            const firstName = rows[i].getElementsByTagName("td")[1]?.textContent.toLowerCase() || "";
-            const lastName = rows[i].getElementsByTagName("td")[2]?.textContent.toLowerCase() || "";
-            const room = rows[i].getElementsByTagName("td")[6]?.textContent.toLowerCase() || "";
-            const fullName = firstName + " " + lastName;
-            const match = fullName.includes(searchTerm) || room.includes(searchTerm);
+            const ID = rows[i].getElementsByTagName("td")[0]?.textContent.toLowerCase() || "";
+    
+            const match = ID.includes(searchTerm)  ;
             rows[i].style.display = match ? "" : "none";
         }
     }
